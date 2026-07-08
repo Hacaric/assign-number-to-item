@@ -51,8 +51,11 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Question: 'Question',
-  Quiz: 'Quiz'
+  User: 'User',
+  Vote: 'Vote',
+  Item: 'Item',
+  VoteOption: 'VoteOption',
+  Study: 'Study'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -68,22 +71,52 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const QuestionScalarFieldEnum = {
-  id: 'id',
-  question: 'question',
-  belongs_to_quiz_id: 'belongs_to_quiz_id'
+export const UserScalarFieldEnum = {
+  uuid: 'uuid',
+  IPaddr_hash: 'IPaddr_hash',
+  first_joined: 'first_joined'
 } as const
 
-export type QuestionScalarFieldEnum = (typeof QuestionScalarFieldEnum)[keyof typeof QuestionScalarFieldEnum]
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const QuizScalarFieldEnum = {
+export const VoteScalarFieldEnum = {
+  id: 'id',
+  chosen_option_id: 'chosen_option_id',
+  item_id: 'item_id',
+  owner_uuid: 'owner_uuid',
+  last_updated: 'last_updated'
+} as const
+
+export type VoteScalarFieldEnum = (typeof VoteScalarFieldEnum)[keyof typeof VoteScalarFieldEnum]
+
+
+export const ItemScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  description: 'description'
+  study_id: 'study_id'
 } as const
 
-export type QuizScalarFieldEnum = (typeof QuizScalarFieldEnum)[keyof typeof QuizScalarFieldEnum]
+export type ItemScalarFieldEnum = (typeof ItemScalarFieldEnum)[keyof typeof ItemScalarFieldEnum]
+
+
+export const VoteOptionScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  studyId: 'studyId'
+} as const
+
+export type VoteOptionScalarFieldEnum = (typeof VoteOptionScalarFieldEnum)[keyof typeof VoteOptionScalarFieldEnum]
+
+
+export const StudyScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  question_text: 'question_text'
+} as const
+
+export type StudyScalarFieldEnum = (typeof StudyScalarFieldEnum)[keyof typeof StudyScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -92,4 +125,12 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

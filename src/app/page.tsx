@@ -1,4 +1,4 @@
-import Quiz from "./quiz/page";
+import Quiz from "./question/[id]/page";
 
 export default function Home() {
   return <div className="flex flox-col items-center justify-center">

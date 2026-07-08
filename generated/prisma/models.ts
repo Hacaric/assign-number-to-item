@@ -8,6 +8,9 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Question'
-export type * from './models/Quiz'
+export type * from './models/User'
+export type * from './models/Vote'
+export type * from './models/Item'
+export type * from './models/VoteOption'
+export type * from './models/Study'
 export type * from './commonInputTypes'

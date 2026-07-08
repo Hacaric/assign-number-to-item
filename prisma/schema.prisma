@@ -10,16 +10,58 @@ datasource db {
   provider = "sqlite"
 }
 
-model Question {
-  id               Int      @id @default(autoincrement())
-  question         String
-  belongs_to_quiz  Quiz     @relation(fields: [belongs_to_quiz_id], references: [id])
-  belongs_to_quiz_id Int 
+// Strcture:
+// User represents unique participant of the study
+// User stores a) uuid, that is stored in the browser
+//             b) hash of IP address (to avoid spammers)
+
+// Study manages one study type (e.g. Object to Number)
+// Study owns set of Items. Items are than voted on by users to determine which option from VoteOptions (owned by that study) corresponds best to it.
+// VoteOption belongs to exactly one Study, set of VoteOptions owned by a Study shouldn't change
+// Vote represents one vote of an user, it belongs to an Item. It has relation to VoteOption (that is owned by Study of the Item) that it votes for.
+
+// If you want to know amount of votes on an item, you'll have to go trough the entire Vote[] list, I'm sorry bro
+
+model User {
+  uuid         String        @id
+  IPaddr_hash  String
+  votes        Vote[]
+  first_joined DateTime
 }
 
-model Quiz {
-  id           Int      @id @default(autoincrement())
-  name         String
-  description  String
-  questions    Question[]
+//TODO make all values non-optional (this is indev only)
+model Vote {
+  id               Int        @id @default(autoincrement())
+  chosen_option_id Int
+  chosen_option    VoteOption @relation(fields: [chosen_option_id], references: [id])
+  item             Item       @relation(fields: [item_id], references: [id])
+  item_id          Int
+  owner_uuid       String?
+  owner            User?      @relation(fields: [owner_uuid], references: [uuid])
+  last_updated     DateTime?
+}
+
+model Item {
+  id               Int        @id @default(autoincrement())
+  name             String
+  study            Study      @relation(fields: [study_id], references: [id])
+  study_id         Int
+  votes            Vote[]
+}
+
+model VoteOption {
+  id               Int        @id @default(autoincrement())
+  name             String
+  votes            Vote[]
+  study            Study?     @relation(fields: [studyId], references: [id])
+  studyId          Int?
+}
+
+model Study {
+  id               Int        @id @default(autoincrement())
+  name             String
+  description      String
+  question_text    String
+  items            Item[]
+  voting_options   VoteOption[]
 }

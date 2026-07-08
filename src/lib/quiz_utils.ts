@@ -2,14 +2,44 @@
 
 import { prisma } from "@/lib/prisma"
 
-interface QuizData {
+interface StudyData {
     name: string,
     descrition: string,
-    questions_ids: number[]
+    item_ids: number[]
 }
-export async function GetQuizData(quiz_id:number): Promise<QuizData|null>{
-    const quiz = await prisma.quiz.findUnique({ where: {id: quiz_id}, include: {questions: true} })
-    if (!quiz){ return null; }
-    const quiz_data: QuizData = {name: quiz.name, descrition: quiz.description, questions_ids: quiz.questions.map((question)=>question.id)}
-    return quiz_data;
+export async function GetStudyData(study_id:number): Promise<StudyData|null>{
+    const study = await prisma.study.findUnique({ where: {id: study_id}, include: {items: true} })
+    if (!study){ return null; }
+    const study_data: StudyData = {
+        name: study.name, 
+        descrition: study.description, 
+        item_ids: study.items.map((item)=>item.id)
+    }
+    return study_data;
+}
+
+export interface ItemData {
+    name: string,
+    question: string,
+    options_range_start?: number,
+    options_range_end?: number
+}
+export async function loadItemData( id:number ): Promise<ItemData|null>{
+    console.log(await prisma.item.findMany())
+    const item = await prisma.item.findUnique({
+        where: {id: id},
+        include: {study: true}
+    })
+
+    if (!item || !item.study){ return null; }
+
+    const study = await prisma.study.findUnique({ 
+        where: { id: item.study_id } 
+    })
+
+    if (!study){ return null; }
+    return {
+        name: item.name,
+        question: item.study.question_text
+    };
 }
