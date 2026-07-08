@@ -28,50 +28,60 @@ export type AggregateQuestion = {
 
 export type QuestionAvgAggregateOutputType = {
   id: number | null
+  belongs_to_quiz_id: number | null
 }
 
 export type QuestionSumAggregateOutputType = {
   id: number | null
+  belongs_to_quiz_id: number | null
 }
 
 export type QuestionMinAggregateOutputType = {
   id: number | null
   question: string | null
+  belongs_to_quiz_id: number | null
 }
 
 export type QuestionMaxAggregateOutputType = {
   id: number | null
   question: string | null
+  belongs_to_quiz_id: number | null
 }
 
 export type QuestionCountAggregateOutputType = {
   id: number
   question: number
+  belongs_to_quiz_id: number
   _all: number
 }
 
 
 export type QuestionAvgAggregateInputType = {
   id?: true
+  belongs_to_quiz_id?: true
 }
 
 export type QuestionSumAggregateInputType = {
   id?: true
+  belongs_to_quiz_id?: true
 }
 
 export type QuestionMinAggregateInputType = {
   id?: true
   question?: true
+  belongs_to_quiz_id?: true
 }
 
 export type QuestionMaxAggregateInputType = {
   id?: true
   question?: true
+  belongs_to_quiz_id?: true
 }
 
 export type QuestionCountAggregateInputType = {
   id?: true
   question?: true
+  belongs_to_quiz_id?: true
   _all?: true
 }
 
@@ -164,6 +174,7 @@ export type QuestionGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 export type QuestionGroupByOutputType = {
   id: number
   question: string
+  belongs_to_quiz_id: number
   _count: QuestionCountAggregateOutputType | null
   _avg: QuestionAvgAggregateOutputType | null
   _sum: QuestionSumAggregateOutputType | null
@@ -192,11 +203,15 @@ export type QuestionWhereInput = {
   NOT?: Prisma.QuestionWhereInput | Prisma.QuestionWhereInput[]
   id?: Prisma.IntFilter<"Question"> | number
   question?: Prisma.StringFilter<"Question"> | string
+  belongs_to_quiz_id?: Prisma.IntFilter<"Question"> | number
+  belongs_to_quiz?: Prisma.XOR<Prisma.QuizScalarRelationFilter, Prisma.QuizWhereInput>
 }
 
 export type QuestionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   question?: Prisma.SortOrder
+  belongs_to_quiz_id?: Prisma.SortOrder
+  belongs_to_quiz?: Prisma.QuizOrderByWithRelationInput
 }
 
 export type QuestionWhereUniqueInput = Prisma.AtLeast<{
@@ -205,11 +220,14 @@ export type QuestionWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.QuestionWhereInput[]
   NOT?: Prisma.QuestionWhereInput | Prisma.QuestionWhereInput[]
   question?: Prisma.StringFilter<"Question"> | string
+  belongs_to_quiz_id?: Prisma.IntFilter<"Question"> | number
+  belongs_to_quiz?: Prisma.XOR<Prisma.QuizScalarRelationFilter, Prisma.QuizWhereInput>
 }, "id">
 
 export type QuestionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   question?: Prisma.SortOrder
+  belongs_to_quiz_id?: Prisma.SortOrder
   _count?: Prisma.QuestionCountOrderByAggregateInput
   _avg?: Prisma.QuestionAvgOrderByAggregateInput
   _max?: Prisma.QuestionMaxOrderByAggregateInput
@@ -223,29 +241,35 @@ export type QuestionScalarWhereWithAggregatesInput = {
   NOT?: Prisma.QuestionScalarWhereWithAggregatesInput | Prisma.QuestionScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Question"> | number
   question?: Prisma.StringWithAggregatesFilter<"Question"> | string
+  belongs_to_quiz_id?: Prisma.IntWithAggregatesFilter<"Question"> | number
 }
 
 export type QuestionCreateInput = {
   question: string
+  belongs_to_quiz: Prisma.QuizCreateNestedOneWithoutQuestionsInput
 }
 
 export type QuestionUncheckedCreateInput = {
   id?: number
   question: string
+  belongs_to_quiz_id: number
 }
 
 export type QuestionUpdateInput = {
   question?: Prisma.StringFieldUpdateOperationsInput | string
+  belongs_to_quiz?: Prisma.QuizUpdateOneRequiredWithoutQuestionsNestedInput
 }
 
 export type QuestionUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   question?: Prisma.StringFieldUpdateOperationsInput | string
+  belongs_to_quiz_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type QuestionCreateManyInput = {
   id?: number
   question: string
+  belongs_to_quiz_id: number
 }
 
 export type QuestionUpdateManyMutationInput = {
@@ -255,29 +279,45 @@ export type QuestionUpdateManyMutationInput = {
 export type QuestionUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   question?: Prisma.StringFieldUpdateOperationsInput | string
+  belongs_to_quiz_id?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type QuestionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   question?: Prisma.SortOrder
+  belongs_to_quiz_id?: Prisma.SortOrder
 }
 
 export type QuestionAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  belongs_to_quiz_id?: Prisma.SortOrder
 }
 
 export type QuestionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   question?: Prisma.SortOrder
+  belongs_to_quiz_id?: Prisma.SortOrder
 }
 
 export type QuestionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   question?: Prisma.SortOrder
+  belongs_to_quiz_id?: Prisma.SortOrder
 }
 
 export type QuestionSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  belongs_to_quiz_id?: Prisma.SortOrder
+}
+
+export type QuestionListRelationFilter = {
+  every?: Prisma.QuestionWhereInput
+  some?: Prisma.QuestionWhereInput
+  none?: Prisma.QuestionWhereInput
+}
+
+export type QuestionOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -292,36 +332,159 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type QuestionCreateNestedManyWithoutBelongs_to_quizInput = {
+  create?: Prisma.XOR<Prisma.QuestionCreateWithoutBelongs_to_quizInput, Prisma.QuestionUncheckedCreateWithoutBelongs_to_quizInput> | Prisma.QuestionCreateWithoutBelongs_to_quizInput[] | Prisma.QuestionUncheckedCreateWithoutBelongs_to_quizInput[]
+  connectOrCreate?: Prisma.QuestionCreateOrConnectWithoutBelongs_to_quizInput | Prisma.QuestionCreateOrConnectWithoutBelongs_to_quizInput[]
+  createMany?: Prisma.QuestionCreateManyBelongs_to_quizInputEnvelope
+  connect?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+}
+
+export type QuestionUncheckedCreateNestedManyWithoutBelongs_to_quizInput = {
+  create?: Prisma.XOR<Prisma.QuestionCreateWithoutBelongs_to_quizInput, Prisma.QuestionUncheckedCreateWithoutBelongs_to_quizInput> | Prisma.QuestionCreateWithoutBelongs_to_quizInput[] | Prisma.QuestionUncheckedCreateWithoutBelongs_to_quizInput[]
+  connectOrCreate?: Prisma.QuestionCreateOrConnectWithoutBelongs_to_quizInput | Prisma.QuestionCreateOrConnectWithoutBelongs_to_quizInput[]
+  createMany?: Prisma.QuestionCreateManyBelongs_to_quizInputEnvelope
+  connect?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+}
+
+export type QuestionUpdateManyWithoutBelongs_to_quizNestedInput = {
+  create?: Prisma.XOR<Prisma.QuestionCreateWithoutBelongs_to_quizInput, Prisma.QuestionUncheckedCreateWithoutBelongs_to_quizInput> | Prisma.QuestionCreateWithoutBelongs_to_quizInput[] | Prisma.QuestionUncheckedCreateWithoutBelongs_to_quizInput[]
+  connectOrCreate?: Prisma.QuestionCreateOrConnectWithoutBelongs_to_quizInput | Prisma.QuestionCreateOrConnectWithoutBelongs_to_quizInput[]
+  upsert?: Prisma.QuestionUpsertWithWhereUniqueWithoutBelongs_to_quizInput | Prisma.QuestionUpsertWithWhereUniqueWithoutBelongs_to_quizInput[]
+  createMany?: Prisma.QuestionCreateManyBelongs_to_quizInputEnvelope
+  set?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  disconnect?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  delete?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  connect?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  update?: Prisma.QuestionUpdateWithWhereUniqueWithoutBelongs_to_quizInput | Prisma.QuestionUpdateWithWhereUniqueWithoutBelongs_to_quizInput[]
+  updateMany?: Prisma.QuestionUpdateManyWithWhereWithoutBelongs_to_quizInput | Prisma.QuestionUpdateManyWithWhereWithoutBelongs_to_quizInput[]
+  deleteMany?: Prisma.QuestionScalarWhereInput | Prisma.QuestionScalarWhereInput[]
+}
+
+export type QuestionUncheckedUpdateManyWithoutBelongs_to_quizNestedInput = {
+  create?: Prisma.XOR<Prisma.QuestionCreateWithoutBelongs_to_quizInput, Prisma.QuestionUncheckedCreateWithoutBelongs_to_quizInput> | Prisma.QuestionCreateWithoutBelongs_to_quizInput[] | Prisma.QuestionUncheckedCreateWithoutBelongs_to_quizInput[]
+  connectOrCreate?: Prisma.QuestionCreateOrConnectWithoutBelongs_to_quizInput | Prisma.QuestionCreateOrConnectWithoutBelongs_to_quizInput[]
+  upsert?: Prisma.QuestionUpsertWithWhereUniqueWithoutBelongs_to_quizInput | Prisma.QuestionUpsertWithWhereUniqueWithoutBelongs_to_quizInput[]
+  createMany?: Prisma.QuestionCreateManyBelongs_to_quizInputEnvelope
+  set?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  disconnect?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  delete?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  connect?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  update?: Prisma.QuestionUpdateWithWhereUniqueWithoutBelongs_to_quizInput | Prisma.QuestionUpdateWithWhereUniqueWithoutBelongs_to_quizInput[]
+  updateMany?: Prisma.QuestionUpdateManyWithWhereWithoutBelongs_to_quizInput | Prisma.QuestionUpdateManyWithWhereWithoutBelongs_to_quizInput[]
+  deleteMany?: Prisma.QuestionScalarWhereInput | Prisma.QuestionScalarWhereInput[]
+}
+
+export type QuestionCreateWithoutBelongs_to_quizInput = {
+  question: string
+}
+
+export type QuestionUncheckedCreateWithoutBelongs_to_quizInput = {
+  id?: number
+  question: string
+}
+
+export type QuestionCreateOrConnectWithoutBelongs_to_quizInput = {
+  where: Prisma.QuestionWhereUniqueInput
+  create: Prisma.XOR<Prisma.QuestionCreateWithoutBelongs_to_quizInput, Prisma.QuestionUncheckedCreateWithoutBelongs_to_quizInput>
+}
+
+export type QuestionCreateManyBelongs_to_quizInputEnvelope = {
+  data: Prisma.QuestionCreateManyBelongs_to_quizInput | Prisma.QuestionCreateManyBelongs_to_quizInput[]
+}
+
+export type QuestionUpsertWithWhereUniqueWithoutBelongs_to_quizInput = {
+  where: Prisma.QuestionWhereUniqueInput
+  update: Prisma.XOR<Prisma.QuestionUpdateWithoutBelongs_to_quizInput, Prisma.QuestionUncheckedUpdateWithoutBelongs_to_quizInput>
+  create: Prisma.XOR<Prisma.QuestionCreateWithoutBelongs_to_quizInput, Prisma.QuestionUncheckedCreateWithoutBelongs_to_quizInput>
+}
+
+export type QuestionUpdateWithWhereUniqueWithoutBelongs_to_quizInput = {
+  where: Prisma.QuestionWhereUniqueInput
+  data: Prisma.XOR<Prisma.QuestionUpdateWithoutBelongs_to_quizInput, Prisma.QuestionUncheckedUpdateWithoutBelongs_to_quizInput>
+}
+
+export type QuestionUpdateManyWithWhereWithoutBelongs_to_quizInput = {
+  where: Prisma.QuestionScalarWhereInput
+  data: Prisma.XOR<Prisma.QuestionUpdateManyMutationInput, Prisma.QuestionUncheckedUpdateManyWithoutBelongs_to_quizInput>
+}
+
+export type QuestionScalarWhereInput = {
+  AND?: Prisma.QuestionScalarWhereInput | Prisma.QuestionScalarWhereInput[]
+  OR?: Prisma.QuestionScalarWhereInput[]
+  NOT?: Prisma.QuestionScalarWhereInput | Prisma.QuestionScalarWhereInput[]
+  id?: Prisma.IntFilter<"Question"> | number
+  question?: Prisma.StringFilter<"Question"> | string
+  belongs_to_quiz_id?: Prisma.IntFilter<"Question"> | number
+}
+
+export type QuestionCreateManyBelongs_to_quizInput = {
+  id?: number
+  question: string
+}
+
+export type QuestionUpdateWithoutBelongs_to_quizInput = {
+  question?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type QuestionUncheckedUpdateWithoutBelongs_to_quizInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  question?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type QuestionUncheckedUpdateManyWithoutBelongs_to_quizInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  question?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
 
 
 export type QuestionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   question?: boolean
+  belongs_to_quiz_id?: boolean
+  belongs_to_quiz?: boolean | Prisma.QuizDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["question"]>
 
 export type QuestionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   question?: boolean
+  belongs_to_quiz_id?: boolean
+  belongs_to_quiz?: boolean | Prisma.QuizDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["question"]>
 
 export type QuestionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   question?: boolean
+  belongs_to_quiz_id?: boolean
+  belongs_to_quiz?: boolean | Prisma.QuizDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["question"]>
 
 export type QuestionSelectScalar = {
   id?: boolean
   question?: boolean
+  belongs_to_quiz_id?: boolean
 }
 
-export type QuestionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "question", ExtArgs["result"]["question"]>
+export type QuestionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "question" | "belongs_to_quiz_id", ExtArgs["result"]["question"]>
+export type QuestionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  belongs_to_quiz?: boolean | Prisma.QuizDefaultArgs<ExtArgs>
+}
+export type QuestionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  belongs_to_quiz?: boolean | Prisma.QuizDefaultArgs<ExtArgs>
+}
+export type QuestionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  belongs_to_quiz?: boolean | Prisma.QuizDefaultArgs<ExtArgs>
+}
 
 export type $QuestionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Question"
-  objects: {}
+  objects: {
+    belongs_to_quiz: Prisma.$QuizPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     question: string
+    belongs_to_quiz_id: number
   }, ExtArgs["result"]["question"]>
   composites: {}
 }
@@ -716,6 +879,7 @@ readonly fields: QuestionFieldRefs;
  */
 export interface Prisma__QuestionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  belongs_to_quiz<T extends Prisma.QuizDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuizDefaultArgs<ExtArgs>>): Prisma.Prisma__QuizClient<runtime.Types.Result.GetResult<Prisma.$QuizPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -747,6 +911,7 @@ export interface Prisma__QuestionClient<T, Null = never, ExtArgs extends runtime
 export interface QuestionFieldRefs {
   readonly id: Prisma.FieldRef<"Question", 'Int'>
   readonly question: Prisma.FieldRef<"Question", 'String'>
+  readonly belongs_to_quiz_id: Prisma.FieldRef<"Question", 'Int'>
 }
     
 
@@ -763,6 +928,10 @@ export type QuestionFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the Question
    */
   omit?: Prisma.QuestionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionInclude<ExtArgs> | null
   /**
    * Filter, which Question to fetch.
    */
@@ -782,6 +951,10 @@ export type QuestionFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensio
    */
   omit?: Prisma.QuestionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionInclude<ExtArgs> | null
+  /**
    * Filter, which Question to fetch.
    */
   where: Prisma.QuestionWhereUniqueInput
@@ -799,6 +972,10 @@ export type QuestionFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Omit specific fields from the Question
    */
   omit?: Prisma.QuestionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionInclude<ExtArgs> | null
   /**
    * Filter, which Question to fetch.
    */
@@ -848,6 +1025,10 @@ export type QuestionFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extension
    */
   omit?: Prisma.QuestionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionInclude<ExtArgs> | null
+  /**
    * Filter, which Question to fetch.
    */
   where?: Prisma.QuestionWhereInput
@@ -895,6 +1076,10 @@ export type QuestionFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Omit specific fields from the Question
    */
   omit?: Prisma.QuestionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionInclude<ExtArgs> | null
   /**
    * Filter, which Questions to fetch.
    */
@@ -944,6 +1129,10 @@ export type QuestionCreateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   omit?: Prisma.QuestionOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionInclude<ExtArgs> | null
+  /**
    * The data needed to create a Question.
    */
   data: Prisma.XOR<Prisma.QuestionCreateInput, Prisma.QuestionUncheckedCreateInput>
@@ -975,6 +1164,10 @@ export type QuestionCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    * The data used to create many Questions.
    */
   data: Prisma.QuestionCreateManyInput | Prisma.QuestionCreateManyInput[]
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -989,6 +1182,10 @@ export type QuestionUpdateArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the Question
    */
   omit?: Prisma.QuestionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionInclude<ExtArgs> | null
   /**
    * The data needed to update a Question.
    */
@@ -1041,6 +1238,10 @@ export type QuestionUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    * Limit how many Questions to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1055,6 +1256,10 @@ export type QuestionUpsertArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the Question
    */
   omit?: Prisma.QuestionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionInclude<ExtArgs> | null
   /**
    * The filter to search for the Question to update in case it exists.
    */
@@ -1081,6 +1286,10 @@ export type QuestionDeleteArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the Question
    */
   omit?: Prisma.QuestionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionInclude<ExtArgs> | null
   /**
    * Filter which Question to delete.
    */
@@ -1113,4 +1322,8 @@ export type QuestionDefaultArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the Question
    */
   omit?: Prisma.QuestionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionInclude<ExtArgs> | null
 }

@@ -11,6 +11,15 @@ datasource db {
 }
 
 model Question {
+  id               Int      @id @default(autoincrement())
+  question         String
+  belongs_to_quiz  Quiz     @relation(fields: [belongs_to_quiz_id], references: [id])
+  belongs_to_quiz_id Int 
+}
+
+model Quiz {
   id           Int      @id @default(autoincrement())
-  question     String
+  name         String
+  description  String
+  questions    Question[]
 }

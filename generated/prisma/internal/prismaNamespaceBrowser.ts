@@ -51,7 +51,8 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Question: 'Question'
+  Question: 'Question',
+  Quiz: 'Quiz'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -69,10 +70,20 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const QuestionScalarFieldEnum = {
   id: 'id',
-  question: 'question'
+  question: 'question',
+  belongs_to_quiz_id: 'belongs_to_quiz_id'
 } as const
 
 export type QuestionScalarFieldEnum = (typeof QuestionScalarFieldEnum)[keyof typeof QuestionScalarFieldEnum]
+
+
+export const QuizScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description'
+} as const
+
+export type QuizScalarFieldEnum = (typeof QuizScalarFieldEnum)[keyof typeof QuizScalarFieldEnum]
 
 
 export const SortOrder = {

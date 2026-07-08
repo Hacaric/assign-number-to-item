@@ -15,7 +15,18 @@ console.log("Starting seed.ts")
 
 async function main() {
   console.log('Start seeding...')
-  await prisma.question.create( {data: {question:"hello, how are u?"}} )
+  await prisma.quiz.create({
+    data: {
+      name: "test",
+      description: "desc",
+      questions: {
+        create: [
+          {question:"Choose a number for the word:<br/>Hat"},
+        ]
+      }
+    },
+    include: {questions:true}
+  })
   console.log('Seeding finished.')
 }
 
