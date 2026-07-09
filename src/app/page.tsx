@@ -5,7 +5,7 @@ export default function Home() {
     <div>
       <h1 className="mt-20 text-3xl font-bold">Assign number to item</h1><br />
       <p>A study of how we associate everyday items with abstract things such as numbers of colors</p>
-      <button><a href="">Complete the quiz ()</a></button>
+      <button className="text-bg font-bold m-5 ml-0 px-3 py-1 border border-1px white cursor-pointer"><a href="/study/1/item/1">test</a></button>
     </div>
   </div>;
 }

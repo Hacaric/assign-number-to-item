@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Database
 prisma/dev.db
+
+# Prisma related files
+generated/prisma/*

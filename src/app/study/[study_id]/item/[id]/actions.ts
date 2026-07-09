@@ -1,9 +1,10 @@
+'use server'
 import { prisma } from "@/lib/prisma";
 import { assert } from "node:console";
 
-export async function SubmitAnswer(item_id:number, answer: string): Promise<boolean>{
+export async function SubmitAnswer(studyId:number, item_id:number, answer: string): Promise<boolean>{
     const item = await prisma.item.findUnique({
-        where: { id: item_id }
+        where: { studyId_id: {studyId: studyId, id: item_id} }
     })
     if (!item) {
         console.error(`Failed to submit answer '${answer}' to item id '${item_id}': item is not in database.`)
@@ -11,7 +12,7 @@ export async function SubmitAnswer(item_id:number, answer: string): Promise<bool
     }
     const possible_voteOptions = await prisma.voteOption.findMany({
         where: {
-            studyId: item.study_id,
+            studyId: studyId,
             name: answer
         }
     })
@@ -20,13 +21,14 @@ export async function SubmitAnswer(item_id:number, answer: string): Promise<bool
     assert(possible_voteOptions.length <= 1);
 
     if (possible_voteOptions.length == 0){
-        console.error(`Failed to submit answer '${answer}' to item id '${item_id}': vote option of study id '${item.study_id}' with name '${answer}' not found.`)
+        console.error(`Failed to submit answer '${answer}' to item id '${item_id}': vote option of study id '${studyId}' with name '${answer}' not found.`)
         return false;
     }
     const voteOption = possible_voteOptions[0];
 
     const vote = await prisma.vote.create({
         data: {
+            study_id: studyId,
             chosen_option_id: voteOption.id,
             item_id: item.id,
         }

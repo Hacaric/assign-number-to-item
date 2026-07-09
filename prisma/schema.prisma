@@ -33,8 +33,9 @@ model User {
 model Vote {
   id               Int        @id @default(autoincrement())
   chosen_option_id Int
-  chosen_option    VoteOption @relation(fields: [chosen_option_id], references: [id])
-  item             Item       @relation(fields: [item_id], references: [id])
+  study_id         Int
+  chosen_option    VoteOption @relation(fields: [chosen_option_id, study_id], references: [id, studyId])
+  item             Item       @relation(fields: [item_id, study_id], references: [id, studyId])
   item_id          Int
   owner_uuid       String?
   owner            User?      @relation(fields: [owner_uuid], references: [uuid])
