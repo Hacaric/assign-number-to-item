@@ -42,19 +42,23 @@ model Vote {
 }
 
 model Item {
-  id               Int        @id @default(autoincrement())
+  id               Int
   name             String
-  study            Study      @relation(fields: [study_id], references: [id])
-  study_id         Int
+  study            Study      @relation(fields: [studyId], references: [id], onDelete: Cascade)
+  studyId          Int
   votes            Vote[]
+
+  @@id([studyId, id])
 }
 
 model VoteOption {
-  id               Int        @id @default(autoincrement())
+  id               Int
   name             String
   votes            Vote[]
-  study            Study?     @relation(fields: [studyId], references: [id])
-  studyId          Int?
+  study            Study     @relation(fields: [studyId], references: [id], onDelete: Cascade)
+  studyId          Int
+
+  @@id([studyId, id])
 }
 
 model Study {

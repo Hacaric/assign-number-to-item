@@ -26,7 +26,7 @@ export function StudyQuestion({ id, item_data }: {id: number, item_data:ItemData
         <p className="col-span-5 text-6xl font-bold my-10 mt-20">{item_data.name}</p>
         <div></div>
         <div className="col-span-5 pt-20 p-5 py-5">
-            <AnswerBox current_choice={currentChoice} trigger_function={setCurrentChoice} />
+            <AnswerBox current_choice={currentChoice} options={item_data.vote_options} trigger_function={setCurrentChoice} />
         </div>
         <div className="col-span-5">
             <button onClick={()=>handleSubmit()} className="text-xl font-bold border border-1px white py-3 px-5 mb-5 rounded-xl cursor-pointer hover:bg-[#ccc] hover:text-black">

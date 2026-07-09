@@ -21,8 +21,7 @@ export async function GetStudyData(study_id:number): Promise<StudyData|null>{
 export interface ItemData {
     name: string,
     question: string,
-    options_range_start?: number,
-    options_range_end?: number
+    vote_options: string[]
 }
 export async function loadItemData( id:number ): Promise<ItemData|null>{
     console.log(await prisma.item.findMany())
@@ -34,12 +33,14 @@ export async function loadItemData( id:number ): Promise<ItemData|null>{
     if (!item || !item.study){ return null; }
 
     const study = await prisma.study.findUnique({ 
-        where: { id: item.study_id } 
+        where: { id: item.study_id },
+        include: { voting_options: true }
     })
 
     if (!study){ return null; }
     return {
         name: item.name,
-        question: item.study.question_text
+        question: item.study.question_text,
+        vote_options: study.voting_options.map((option)=>option.name)
     };
 }

@@ -1,0 +1,13 @@
+
+> assign-number-to-item@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.10 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://158.195.91.137:3000
+- Environments: .env
+✓ Ready in 721ms
+
+ GET /study/0/item/1 500 in 396ms (next.js: 167ms, application-code: 228ms)
+ GET /study/0/item/1 500 in 44ms (next.js: 20ms, application-code: 24ms)
+[?25h
