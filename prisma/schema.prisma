@@ -24,7 +24,6 @@ datasource db {
 
 model User {
   uuid         String        @id
-  IPaddr_hash  String
   votes        Vote[]
   first_joined DateTime
 }

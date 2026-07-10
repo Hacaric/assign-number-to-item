@@ -4,15 +4,18 @@ import { AnswerBox } from "./answer_box";
 import { ItemData, StudyData } from "@/src/lib/quiz_utils";
 import { SubmitAnswer } from "./actions";
 
-export function StudyQuestion({ studyData, itemData }: { studyData:StudyData, itemData:ItemData }) {
-    const [currentChoice, setCurrentChoice] = useState<string|null>(null);
+export function StudyQuestion({ studyData, itemData, selected }: { studyData:StudyData, itemData:ItemData, selected: number|null }) {
+    const [currentChoice, setCurrentChoice] = useState<number|null>(selected);
         
     async function handleSubmit(){
         if (!currentChoice){
             alert("Choose an option before submiting");
             return
         }
-        const status: boolean = await SubmitAnswer(studyData.id, itemData.id, currentChoice)
+        const successful: boolean = await SubmitAnswer(studyData.id, itemData.id, currentChoice);
+        if (!successful){
+            alert("Error sending vote")
+        }
     }
 
     return <div className="m-20 mt-10 mx-[20vw] p-1 pt-0 grid grid-cols-5 place-items-center gap-4 border border-1px white rounded-3xl">

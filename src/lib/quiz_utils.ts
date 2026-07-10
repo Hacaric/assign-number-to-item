@@ -27,7 +27,7 @@ export interface ItemData {
     studyId: number,
     name: string,
     question: string,
-    vote_options: string[]
+    vote_options: {id: number, name: string}[]
 }
 export async function loadItemData( studyId:number, id:number ): Promise<ItemData|null>{
     console.log(await prisma.item.findMany())
@@ -49,6 +49,6 @@ export async function loadItemData( studyId:number, id:number ): Promise<ItemDat
         studyId: item.studyId,
         name: item.name,
         question: item.study.question_text,
-        vote_options: study.voting_options.map((option)=>option.name)
+        vote_options: study.voting_options.map((option)=>{return {id: option.id, name: option.name}})
     };
 }

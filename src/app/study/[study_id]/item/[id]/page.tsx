@@ -1,6 +1,8 @@
 import { loadItemData, ItemData, StudyData, GetStudyData } from "@/src/lib/quiz_utils";
 import { StudyQuestion } from "./item";
 import { prisma } from "@/lib/prisma";
+import { GetUserData, GetUserVotes } from "@/src/lib/user_utils";
+import { assert } from "node:console";
 
 export default async function QuestionPage(props: { params: Promise<{ study_id: string, id: string }> }){
     'use server'
@@ -18,7 +20,25 @@ export default async function QuestionPage(props: { params: Promise<{ study_id: 
         return <div>Failed to load: failed to load study {studyId} </div>
     }
     
+    let selected = null
+    const user_votes = await GetUserVotes();
+    if (user_votes){
+        console.log(`ALL user votes: ${user_votes.map((vote)=>vote.owner_uuid)}`)
+        const user_votes_on_this_item = user_votes.filter(
+            (val) => 
+                val.study_id == studyId
+                && val.item_id == id
+        )
+
+        assert(user_votes_on_this_item.length <= 1);
+
+        console.log(`USER VOTES: ${user_votes_on_this_item}`)
+        if (user_votes_on_this_item.length > 0) {
+            selected = user_votes_on_this_item[0].chosen_option_id;
+        }
+    } else {console.log(`Failed to load user votes`)}
+    
     return <div>
-        <StudyQuestion studyData={study_data} itemData={item_data} />
+        <StudyQuestion studyData={study_data} itemData={item_data} selected={selected} />
     </div>
 }
