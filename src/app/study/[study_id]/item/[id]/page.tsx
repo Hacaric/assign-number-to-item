@@ -23,7 +23,7 @@ export default async function QuestionPage(props: { params: Promise<{ study_id: 
     let selected = null
     const user_votes = await GetUserVotes();
     if (user_votes){
-        console.log(`ALL user votes: ${user_votes.map((vote)=>vote.owner_uuid)}`)
+        console.log(`ALL user votes ids: ${user_votes.map((vote)=>vote.id)}`)
         const user_votes_on_this_item = user_votes.filter(
             (val) => 
                 val.study_id == studyId

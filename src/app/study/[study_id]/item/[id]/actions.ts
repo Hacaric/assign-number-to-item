@@ -9,6 +9,7 @@ export async function SubmitAnswer(studyId:number, item_id:number, answer_id: nu
     if (!user) {
         return false;
     }
+    console.log(`User ${user.uuid} is submitting choice ${answer_id}`)
 
     const item = await prisma.item.findUnique({
         where: { studyId_id: {studyId: studyId, id: item_id} }
@@ -63,7 +64,7 @@ export async function SubmitAnswer(studyId:number, item_id:number, answer_id: nu
         return false;
     }
     
-    console.log(`Successfully created/updated vote: ${vote}`)
+    console.log(`Successfully created/updated vote: ${vote} by user (uuid) ${user.uuid}`)
     return true;
 }
 

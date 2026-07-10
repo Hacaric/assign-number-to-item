@@ -24,24 +24,19 @@ export async function GetUerIP(): Promise<string> {
 
 export async function GetUserData(): Promise<User|null> {
     const user_cookies = await cookies()
-    const user_uuid = user_cookies.get('user-uuid')?.value;
+    const user_uuid = user_cookies.get('user_uuid')?.value;
 
+    if (!user_uuid){
+        console.warn(`GetUserData(): Failed to load user: cookie 'user_uuid' is missing.`)
+        return null
+    }
     const user = await prisma.user.findUnique({
         where: {uuid: user_uuid},
     })
 
-    // if (!user || !user_uuid) {
-    //     const uuid = randomUUID();
-    //     const datetime_now = new Date();
-    //     user = await prisma.user.create({
-    //         data: {
-    //             IPaddr_hash: ip_hash,
-    //             uuid: uuid,
-    //             first_joined: datetime_now
-    //         },
-    //     })
-    //     user_cookies.set('user-uuid', uuid)
-    // }
+    if (!user) {
+        console.warn(`GetUserData(): Failed to load user: uuid not in database`)
+    }
 
     return user;
 }
@@ -51,7 +46,7 @@ export async function GetUserVotes(): Promise<Vote[]|null> {
     // Maybe fasted would be to get user and include: {votes: true} and return the votes, idk
 
     const user = await GetUserData();
-    if (!user) {return null}
+    if (!user) {console.warn(`GetUserVotes(): failed to load user.`); return null}
     const votes = await prisma.vote.findMany({
         where: {owner_uuid: user.uuid}
     })
