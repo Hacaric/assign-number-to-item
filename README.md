@@ -1,8 +1,10 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Study of associations between unrelated concepts
+**My small website project to study how we associate unrelated concepts for example between animals and numbers** 
 
-## Getting Started
+## How to run
+This is the most basic NextJS app
 
-First, run the development server:
+To start development server run:
 
 ```bash
 npm run dev
@@ -16,21 +18,15 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Inspiration
+This is inspired by a game we played with friends
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Structure
+### Study
+The website is organised into `studies`. Each study owns set of `VoteOptions`, which are the options to associate a concept with (e.g. numbers 0-9). Each study owns set of `Item`s, those are the target concepts (e.g. animals). The amount of `VoteOption`s should not change during the study, whereas `Item`s can.
 
-## Learn More
+### User
+When user first visits the website, an UUID is given to them (`src/app/proxy.ts`). This UUID is stored in cookies and indentifies the user. No other identificator of the user is stored. Therefore, the user is anonymous as long as the POST and GET requests are not recorded.
 
-To learn more about Next.js, take a look at the following resources:
+//TODO: UUID is stored in cookies, which means that user can easily delete it. Further protection will be needed to avoid spam
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
