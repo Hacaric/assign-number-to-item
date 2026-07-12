@@ -1,7 +1,6 @@
 import { loadItemData, ItemData, StudyData, GetStudyData } from "@/src/lib/quiz_utils";
 import { StudyQuestion } from "./item";
-import { prisma } from "@/lib/prisma";
-import { GetUserData, GetUserVotes } from "@/src/lib/user_utils";
+import { GetUserVotes, HasUserCompletedStudy } from "@/src/lib/user_utils";
 import { assert } from "node:console";
 
 export default async function QuestionPage(props: { params: Promise<{ study_id: string, id: string }> }){
@@ -38,7 +37,9 @@ export default async function QuestionPage(props: { params: Promise<{ study_id: 
         }
     } else {console.log(`Failed to load user votes`)}
     
+    const studyPreviouslyCompleted:boolean = await HasUserCompletedStudy(study_data.id) || false;
+
     return <div>
-        <StudyQuestion studyData={study_data} itemData={item_data} selected={selected} />
+        <StudyQuestion studyData={study_data} itemData={item_data} selected={selected} studyPreviouslyCompleted={studyPreviouslyCompleted} />
     </div>
 }

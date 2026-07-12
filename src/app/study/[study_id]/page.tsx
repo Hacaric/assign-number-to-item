@@ -1,9 +1,7 @@
-import { loadItemData, ItemData, StudyData, GetStudyData } from "@/src/lib/quiz_utils";
 import { prisma } from "@/lib/prisma";
-import { GetUserData, GetUserVotes } from "@/src/lib/user_utils";
-import { assert } from "node:console";
+import { HasUserCompletedStudy } from "@/src/lib/user_utils";
 
-export default async function QuestionPage(props: { params: Promise<{ study_id: string }> }){
+export default async function AboutStudy(props: { params: Promise<{ study_id: string }> }){
     const study_id_string = (await props.params).study_id;
     const study_id = Number(study_id_string)
     if (isNaN(study_id)) {
@@ -16,10 +14,25 @@ export default async function QuestionPage(props: { params: Promise<{ study_id: 
         return <div><b>Error: study with indentificator '{study_id}' does not exist</b></div>
     }
 
-    return <div>
-        <h1 className="text-4xl font-bold">Study {study_id}</h1>
-        <h2 className="font-bold">Name: {study.name}</h2>
-        <p>Description: {study.description}</p>
-        <button className="text-bg font-bold m-5 ml-0 px-3 py-1 border border-1px white cursor-pointer"><a href={`/study/${study_id}/item/0`}>Jump to the first question</a></button>
+    const user_completed_study = await HasUserCompletedStudy(study_id);
+
+    return <div className="m-20 mt-10 mx-[20vw] p-1 pt-0 grid grid-cols-3 place-items-center gap-4 border border-1px white rounded-3xl">
+        <p className="p-0 m-0 mt-5 ml-3">
+            <a href="/" className="underline mx-1">Home</a>
+            / Study {study_id}
+        </p>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div className="mb-10">
+            <h1 className="text-4xl font-bold">Study {study_id}</h1>
+            <p className="font-bold">Name: {study.name}</p>
+            <p className="font-bold">Description: <span className="font-normal">{study.description}</span></p>
+            {
+                user_completed_study &&
+                <p className="font-bold">Overview: <a href={`/study/${study_id}/overview`} className="font-normal text-sky-400 undeline">here</a></p>
+            }
+            <button className="text-bg font-bold m-5 ml-0 px-3 py-1 border border-1px white cursor-pointer"><a href={`/study/${study_id}/item/0`}>Jump to the first question</a></button>
+        </div>
     </div>
 }

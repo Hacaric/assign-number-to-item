@@ -3,7 +3,8 @@
 import { User, Vote } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { cookies, headers } from "next/headers";
-import { hash, randomUUID } from "node:crypto";
+import { randomUUID } from "node:crypto";
+import { GetStudyData } from "./quiz_utils";
 
 export async function GetUerIP(): Promise<string> {
     const headerList = await headers();
@@ -62,6 +63,28 @@ export async function CreateUser(): Promise<User> {
             first_joined: datetime_now
         },
     })
+    console.info(`CreateUser(): Created new user, uuid ${user.uuid}`)
     return user
+}
+
+export async function HasUserCompletedStudy( study_id: number ): Promise<boolean|null> {
+    const user_votes = await GetUserVotes();
+    const study = await GetStudyData(study_id);
+
+    if (!user_votes || !study){ return null; }
+    
+    const user_answered_items_ids = user_votes.filter((vote) => vote.study_id==study.id).map((vote)=>vote.item_id).sort();
+    const all_study_items_ids = study.item_ids.sort();
+    console.debug(`HasUserCompletedStudy(): Is this sorted? ${user_answered_items_ids}`)
+    for (let i = 0; i < all_study_items_ids.length; i++){
+        if (i >= user_answered_items_ids.length) {
+            return false;
+        }
+        if (user_answered_items_ids[i] != all_study_items_ids[i]){
+            console.error(`This should never happen: user voted twice on the same item or user voted on item that doesn't exist`)
+            return false;
+        }
+    }
+    return true;
 }
 

@@ -4,7 +4,7 @@ import { AnswerBox } from "./answer_box";
 import { ItemData, StudyData } from "@/src/lib/quiz_utils";
 import { SubmitAnswer } from "./actions";
 
-export function StudyQuestion({ studyData, itemData, selected }: { studyData:StudyData, itemData:ItemData, selected: number|null }) {
+export function StudyQuestion({ studyData, itemData, selected, studyPreviouslyCompleted }: { studyData:StudyData, itemData:ItemData, selected: number|null, studyPreviouslyCompleted: boolean }) {
     const [currentChoice, setCurrentChoice] = useState<number|null>(selected);
         
     async function handleSubmit(choice?: number){
@@ -40,7 +40,8 @@ export function StudyQuestion({ studyData, itemData, selected }: { studyData:Stu
         }
     }
 
-    return <div className="m-20 mt-10 mx-[20vw] p-1 pt-0 grid grid-cols-5 place-items-center gap-4 border border-1px white rounded-3xl">
+
+    return <div className="m-20 mt-10 min-w-[80vw] p-1 pt-0 grid grid-cols-5 place-items-center gap-4 border border-1px white rounded-3xl">
         <div className="p-0 m-0 mt-5 ml-3">
             <p className="text-bg"><a href="/" className="underline">Home</a> / <a href={`/study/${studyData.id}/`} className="underline">Study {studyData.id}</a> / Item #{itemData.id}</p>
         </div>
@@ -60,9 +61,14 @@ export function StudyQuestion({ studyData, itemData, selected }: { studyData:Stu
         </div>
         { currentChoice != null && itemData.id < studyData.item_amount-1 &&
         <div className="col-span-5">
+            {studyPreviouslyCompleted && 
+            <a href={`/study/${studyData.id}/overview`} className="text-xl font-bold border border-1px white py-3 px-5 mb-5 rounded-xl cursor-pointer hover:bg-[#ccc] hover:text-black m-2 whitespace-nowrap inline-block">
+                Overview
+            </a>
+            }
             <a href={`/study/${studyData.id}/item/${itemData.id + 1}`} className="whitespace-nowrap">
                 <button className="text-xl font-bold border border-1px white py-3 px-5 mb-5 rounded-xl cursor-pointer hover:bg-[#ccc] hover:text-black">
-                    {"Next >"}
+                    {"Next"}
                 </button>
             </a>
         </div>

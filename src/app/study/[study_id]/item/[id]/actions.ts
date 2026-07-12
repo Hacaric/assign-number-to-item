@@ -37,7 +37,8 @@ export async function SubmitAnswer(studyId:number, item_id:number, answer_id: nu
     const previous_vote = await prisma.vote.findFirst({
         where: {
             study_id: studyId,
-            item_id: item_id,
+            item_id: item.id,
+            owner_uuid: user.uuid,
         }
     })
     let vote;
@@ -58,13 +59,13 @@ export async function SubmitAnswer(studyId:number, item_id:number, answer_id: nu
             }
         })
     }
-    
+
     if (!vote){
         console.error(`Failed to submit answer '${answer_id}' to item id '${item_id}': failed to create vote. Why? Idk, it's ur problem now :3.`)
         return false;
     }
     
-    console.log(`Successfully created/updated vote: ${vote} by user (uuid) ${user.uuid}`)
+    console.log(`Successfully created/updated vote: id ${vote.id}; chosen option: ${vote.chosen_option_id} on item ${vote.item_id} by user (uuid) ${user.uuid}`)
     return true;
 }
 
