@@ -1,6 +1,6 @@
 // import { loadItemData, ItemData, StudyData, GetStudyData } from "@/src/lib/quiz_utils";
 import { prisma } from "@/lib/prisma";
-import { chart_user_color, ItemStats } from "./item_stats";
+import { chart_participant_color, ItemStats } from "./item_stats";
 
 export default async function Overview(props: { params: Promise<{ study_id: string }> }){
     const study_id_string = (await props.params).study_id;
@@ -42,7 +42,7 @@ export default async function Overview(props: { params: Promise<{ study_id: stri
                 <span className="font-bold">Description:</span> 
                 <p className="ml-5">{study.description}</p>
             </span>
-            <p className="italic">Note: options you voted for are colored <span style={{ backgroundColor: chart_user_color }} className="p-1">Dark Green</span></p>
+            <p className="italic">Note: options you voted for are colored <span style={{ backgroundColor: chart_participant_color }} className="p-1">Dark Green</span></p>
         </div>
         <div className="mx-10 col-span-3 w-full grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-8 justify-center items-center">
             { charts }

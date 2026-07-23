@@ -11,61 +11,78 @@ datasource db {
 }
 
 // Strcture:
-// User represents unique participant of the study
-// User stores a) uuid, that is stored in the browser
+// Participant represents unique participant of the study
+// Participant stores a) uuid, that is stored in the browser
 //             b) hash of IP address (to avoid spammers)
 
 // Study manages one study type (e.g. Object to Number)
-// Study owns set of Items. Items are than voted on by users to determine which option from VoteOptions (owned by that study) corresponds best to it.
+// Study owns set of Items. Items are than voted on by participants to determine which option from VoteOptions (owned by that study) corresponds best to it.
 // VoteOption belongs to exactly one Study, set of VoteOptions owned by a Study shouldn't change
-// Vote represents one vote of an user, it belongs to an Item. It has relation to VoteOption (that is owned by Study of the Item) that it votes for.
+// Vote represents one vote of an participant, it belongs to an Item. It has relation to VoteOption (that is owned by Study of the Item) that it votes for.
 
 // If you want to know amount of votes on an item, you'll have to go trough the entire Vote[] list, I'm sorry bro
 
-model User {
-  uuid         String        @id
+model Participant {
+  uuid         String   @id
   votes        Vote[]
   first_joined DateTime
+  user         User?
+}
+
+model User {
+  username         String      @id
+  email            String      @unique
+  password_hash    String
+  participant_uuid String      @unique
+  participant      Participant @relation(fields: [participant_uuid], references: [uuid])
+  session          Session?
+}
+
+model Session {
+  session_id String   @id
+  user_name  String   @unique
+  user       User     @relation(fields: [user_name], references: [username])
+  expires    DateTime
 }
 
 //TODO make all values non-optional (this is indev only)
 model Vote {
-  id               Int        @id @default(autoincrement())
+  id               Int          @id @default(autoincrement())
   chosen_option_id Int
   study_id         Int
-  chosen_option    VoteOption @relation(fields: [chosen_option_id, study_id], references: [id, studyId])
-  item             Item       @relation(fields: [item_id, study_id], references: [id, studyId])
+  chosen_option    VoteOption   @relation(fields: [chosen_option_id, study_id], references: [id, studyId])
+  item             Item         @relation(fields: [item_id, study_id], references: [id, studyId])
   item_id          Int
   owner_uuid       String?
-  owner            User?      @relation(fields: [owner_uuid], references: [uuid])
+  owner            Participant? @relation(fields: [owner_uuid], references: [uuid])
   last_updated     DateTime?
 }
 
 model Item {
-  id               Int
-  name             String
-  study            Study      @relation(fields: [studyId], references: [id], onDelete: Cascade)
-  studyId          Int
-  votes            Vote[]
+  id      Int
+  name    String
+  study   Study  @relation(fields: [studyId], references: [id], onDelete: Cascade)
+  studyId Int
+  votes   Vote[]
 
   @@id([studyId, id])
 }
 
 model VoteOption {
-  id               Int
-  name             String
-  votes            Vote[]
-  study            Study     @relation(fields: [studyId], references: [id], onDelete: Cascade)
-  studyId          Int
+  id      Int
+  name    String
+  votes   Vote[]
+  study   Study  @relation(fields: [studyId], references: [id], onDelete: Cascade)
+  studyId Int
 
   @@id([studyId, id])
 }
 
 model Study {
-  id               Int        @id @default(autoincrement())
-  name             String
-  description      String
-  question_text    String
-  items            Item[]
-  voting_options   VoteOption[]
+  id             Int          @id @default(autoincrement())
+  name           String
+  description    String
+  question_text  String
+  items          Item[]
+  voting_options VoteOption[]
 }

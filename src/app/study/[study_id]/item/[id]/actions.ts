@@ -1,15 +1,15 @@
 'use server'
 import { prisma } from "@/lib/prisma";
-import { GetUserData } from "@/src/lib/user_utils";
+import { GetParticipantData } from "@/src/lib/user_utils";
 import { assert } from "node:console";
 
 
 export async function SubmitAnswer(studyId:number, item_id:number, answer_id: number): Promise<boolean>{
-    const user = await GetUserData();
-    if (!user) {
+    const participant = await GetParticipantData();
+    if (!participant) {
         return false;
     }
-    console.log(`User ${user.uuid} is submitting choice ${answer_id}`)
+    console.log(`Participant ${participant.uuid} is submitting choice ${answer_id}`)
 
     const item = await prisma.item.findUnique({
         where: { studyId_id: {studyId: studyId, id: item_id} }
@@ -38,7 +38,7 @@ export async function SubmitAnswer(studyId:number, item_id:number, answer_id: nu
         where: {
             study_id: studyId,
             item_id: item.id,
-            owner_uuid: user.uuid,
+            owner_uuid: participant.uuid,
         }
     })
     let vote;
@@ -55,7 +55,7 @@ export async function SubmitAnswer(studyId:number, item_id:number, answer_id: nu
                 study_id: studyId,
                 chosen_option_id: voteOption.id,
                 item_id: item.id,
-                owner_uuid: user.uuid,
+                owner_uuid: participant.uuid,
             }
         })
     }
@@ -65,7 +65,7 @@ export async function SubmitAnswer(studyId:number, item_id:number, answer_id: nu
         return false;
     }
     
-    console.log(`Successfully created/updated vote: id ${vote.id}; chosen option: ${vote.chosen_option_id} on item ${vote.item_id} by user (uuid) ${user.uuid}`)
+    console.log(`Successfully created/updated vote: id ${vote.id}; chosen option: ${vote.chosen_option_id} on item ${vote.item_id} by participant (uuid) ${participant.uuid}`)
     return true;
 }
 

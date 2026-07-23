@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { HasUserCompletedStudy } from "@/src/lib/user_utils";
+import { HasParticipantCompletedStudy } from "@/src/lib/user_utils";
 
 export default async function AboutStudy(props: { params: Promise<{ study_id: string }> }){
     const study_id_string = (await props.params).study_id;
@@ -14,7 +14,7 @@ export default async function AboutStudy(props: { params: Promise<{ study_id: st
         return <div><b>Error: study with indentificator '{study_id}' does not exist</b></div>
     }
 
-    const user_completed_study = await HasUserCompletedStudy(study_id);
+    const participant_completed_study = await HasParticipantCompletedStudy(study_id);
 
     return <div className="m-20 mt-10 mx-[20vw] p-1 pt-0 grid grid-cols-3 place-items-center gap-4 border border-1px white rounded-3xl">
         <p className="p-0 m-0 mt-5 ml-3">
@@ -29,7 +29,7 @@ export default async function AboutStudy(props: { params: Promise<{ study_id: st
             <p className="font-bold">Name: {study.name}</p>
             <p className="font-bold">Description: <span className="font-normal">{study.description}</span></p>
             {
-                user_completed_study &&
+                participant_completed_study &&
                 <p className="font-bold">Overview: <a href={`/study/${study_id}/overview`} className="font-normal text-sky-400 undeline">here</a></p>
             }
             <button className="text-bg font-bold m-5 ml-0 px-3 py-1 border border-1px white cursor-pointer"><a href={`/study/${study_id}/item/0`}>Jump to the first question</a></button>

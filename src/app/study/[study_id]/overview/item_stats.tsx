@@ -1,10 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import { assert } from "node:console";
 import { Chart } from "./chart";
-import { GetUserVotes } from "@/src/lib/user_utils";
+import { GetParticipantVotes } from "@/src/lib/user_utils";
 
 export const chart_color = 'rgba(47, 255, 20, 0.65)';
-export const chart_user_color = 'rgba(25, 138, 10, 0.65)'
+export const chart_participant_color = 'rgba(25, 138, 10, 0.65)'
 
 export async function ItemStats({study_id, item_id}: { study_id: number, item_id: number }){
     const study = await prisma.study.findUnique({
@@ -23,14 +23,14 @@ export async function ItemStats({study_id, item_id}: { study_id: number, item_id
         return <div>Failed to load item with id={item_id}, study_id={study_id}</div>
     }
 
-    const user_votes = await GetUserVotes();
-    let user_chose_option:number|null = null;
-    if (user_votes){
-        const user_vote_relevant = user_votes.filter((vote)=> vote.study_id==study_id && vote.item_id==item_id)
-        assert(user_vote_relevant.length <= 1);
+    const participant_votes = await GetParticipantVotes();
+    let participant_chose_option:number|null = null;
+    if (participant_votes){
+        const participant_vote_relevant = participant_votes.filter((vote)=> vote.study_id==study_id && vote.item_id==item_id)
+        assert(participant_vote_relevant.length <= 1);
 
-        if (user_vote_relevant) {
-            user_chose_option = user_vote_relevant[0].chosen_option_id;
+        if (participant_vote_relevant) {
+            participant_chose_option = participant_vote_relevant[0].chosen_option_id;
         }
     }
 
@@ -64,12 +64,12 @@ export async function ItemStats({study_id, item_id}: { study_id: number, item_id
         {
             label: 'number of votes',
             data: vote_per_option,
-            backgroundColor: vote_per_option.map((_, i) => (user_chose_option == i) ? chart_user_color : chart_color),
+            backgroundColor: vote_per_option.map((_, i) => (participant_chose_option == i) ? chart_participant_color : chart_color),
         },
         // {
         //     label: 'your vote',
         //     data: [],
-        //     backgroundColor: chart_user_color,
+        //     backgroundColor: chart_participant_color,
         // }
     ],
     };
