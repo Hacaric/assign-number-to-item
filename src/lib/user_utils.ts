@@ -5,6 +5,9 @@ import { prisma } from "@/lib/prisma";
 import { cookies, headers } from "next/headers";
 import { hash, randomUUID } from "node:crypto";
 import { GetStudyData } from "./quiz_utils";
+import { assert } from "node:console";
+
+const UUID_LENGHT = 36
 
 export async function GetUerIP(): Promise<string> {
     const headerList = await headers();
@@ -23,9 +26,10 @@ export async function GetUerIP(): Promise<string> {
 }
 
 
-export async function GetParticipantData(): Promise<Participant|null> {
+export async function GetParticipantData(): Promise<Participant&{votes:Vote[]}|null> {
     const participant_cookies = await cookies()
-    const participant_uuid = participant_cookies.get('participant_access_key')?.value;
+    const participant_access_cookie = participant_cookies.get('participant_access_key')?.value;
+    const participant_uuid = participant_access_cookie?.slice(0, UUID_LENGHT);
 
     if (!participant_uuid){
         console.warn(`GetParticipantData(): Failed to load participant: cookie 'participant_access_key' is missing.`)
@@ -33,10 +37,17 @@ export async function GetParticipantData(): Promise<Participant|null> {
     }
     const participant = await prisma.participant.findUnique({
         where: {uuid: participant_uuid},
+        include: {votes: true}
     })
 
     if (!participant) {
         console.warn(`GetParticipantData(): Failed to load participant: uuid not in database`)
+        return null;
+    }
+
+    if (await GetParticipantAccessCookie(participant.uuid) != participant_access_cookie) {
+        console.warn(`Participant uuid ${participant.uuid} with access key ${participant_access_cookie}: Access denied: bad acces key`)
+        return null;
     }
 
     return participant;
@@ -56,6 +67,7 @@ export async function GetParticipantVotes(): Promise<Vote[]|null> {
 
 export async function CreateParticipant(): Promise<Participant> {
     const uuid = randomUUID();
+    assert(uuid.length == UUID_LENGHT);
     const datetime_now = new Date();
     const participant = await prisma.participant.create({
         data: {
@@ -88,14 +100,14 @@ export async function HasParticipantCompletedStudy( study_id: number ): Promise<
     return true;
 }
 
-export async function GetParticipantAccessCookie(participant_uuid:string) {
+export async function GetParticipantAccessCookie(participant_uuid:string): Promise<string|null> {
     const participant = await prisma.participant.findUnique({
         where: {uuid: participant_uuid}
     })
     if (!participant) {
         return null
     }
-    return hash('sha256', `${participant.uuid}#${participant.first_joined}`);
+    return `${participant.uuid}${hash('sha256', `${participant.uuid}#${participant.first_joined}`)}`;
 }
 
 export async function getUser(session_id:string): Promise<User|null> {
@@ -112,3 +124,14 @@ export async function getUser(session_id:string): Promise<User|null> {
     }
 }
 
+export async function isUserSessionValid(session_cookie:string): Promise<boolean> {
+    return false;
+}
+
+export async function isParticipantAccessKeyValid(access_key: string): Promise<boolean> {
+    return await GetParticipantAccessCookie(access_key.slice(0, UUID_LENGHT)) == access_key;
+}
+
+export async function GetUserData(): Promise<User|null> {
+    return null;
+}

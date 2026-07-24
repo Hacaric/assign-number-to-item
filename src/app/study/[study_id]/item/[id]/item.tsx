@@ -41,7 +41,7 @@ export function StudyQuestion({ studyData, itemData, selected, studyPreviouslyCo
     }
 
 
-    return <div className="m-20 mt-10 min-w-[80vw] p-1 pt-0 grid grid-cols-5 place-items-center gap-4 border border-1px white rounded-3xl">
+    return <div className="grid grid-cols-5 place-items-center gap-4">
         <div className="p-0 m-0 mt-5 ml-3">
             <p className="text-bg"><a href="/" className="underline">Home</a> / <a href={`/study/${studyData.id}/`} className="underline">Study {studyData.id}</a> / Item #{itemData.id}</p>
         </div>

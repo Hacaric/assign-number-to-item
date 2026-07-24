@@ -27,7 +27,20 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col items-center p-10">{children}</body>
+      <body className="min-h-full flex flex-col items-center p-10">
+        <div className="grid grid-cols-3">
+          <div></div>
+          <div></div>
+          <div className="">
+            <p>
+              <a href="/account" className="absolute top-3 right-5">Account</a>
+            </p>
+          </div>
+          <div className="cols-span-3 m-20 mt-10 min-w-[80vw] p-1 pt-0 border border-1px white rounded-3xl">
+            {children}
+          </div>
+        </div>
+      </body>
     </html>
   );
 }

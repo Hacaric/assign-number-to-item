@@ -22,10 +22,11 @@ export default async function Overview(props: { params: Promise<{ study_id: stri
         }
     )
 
-    return <div className="w-full min-w-[80vw] mt-10 p-5 pt-0 grid grid-cols-3 place-items-center gap-2 border border-white rounded-3xl">
+    return <div className="grid grid-cols-3 place-items-center gap-2">
         <p className="p-0 m-0 mt-4 ml-0 justify-self-start">
             <a href="/" className="underline mx-1">Home</a>
-            / Study {study_id}
+            /
+            <a href={`/study/${study_id}`} className="underline mx-1">Study {study_id}</a>
         </p>
         <div></div>
         <div></div>

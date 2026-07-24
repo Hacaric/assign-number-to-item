@@ -40,6 +40,7 @@ model User {
 
 model Session {
   session_id String   @id
+  session_ked String
   user_name  String   @unique
   user       User     @relation(fields: [user_name], references: [username])
   expires    DateTime

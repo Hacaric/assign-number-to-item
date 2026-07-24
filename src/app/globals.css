@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -16,6 +20,13 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+  }
+}
+
+@layer base {
+  .button0 {
+    border: 1px solid #ffffff;
+    @apply px-3 py-1 bg-black text-white font-medium shadow-md hover:bg-gray-700 hover:cursor-pointer;
   }
 }
 

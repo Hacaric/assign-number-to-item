@@ -16,7 +16,7 @@ export default async function AboutStudy(props: { params: Promise<{ study_id: st
 
     const participant_completed_study = await HasParticipantCompletedStudy(study_id);
 
-    return <div className="m-20 mt-10 mx-[20vw] p-1 pt-0 grid grid-cols-3 place-items-center gap-4 border border-1px white rounded-3xl">
+    return <div className="grid grid-cols-3 place-items-center gap-4">
         <p className="p-0 m-0 mt-5 ml-3">
             <a href="/" className="underline mx-1">Home</a>
             / Study {study_id}
