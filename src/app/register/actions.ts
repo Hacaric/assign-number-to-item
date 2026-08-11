@@ -20,3 +20,11 @@ export async function LoginAnonymously(redirect_url_promise?:string|undefined|an
         redirect('/');
     }
 }
+
+
+export async function CreateAccount(username: string, password: string): Promise<{wasSuccessful: boolean, message: string}> {
+    return {wasSuccessful: false, message: "Under construction..."}
+}
+
+
+

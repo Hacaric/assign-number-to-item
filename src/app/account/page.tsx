@@ -21,6 +21,24 @@ export default async function Account() {
             <i>Our middleware is cooked rn</i>
         </div>
     }
+    const votes_div = participant?.votes.map(async (vote) => {
+        const item = await prisma.item.findUnique({
+            where: {studyId_id: {studyId: vote.study_id, id: vote.item_id}}
+        })
+        const voteOption = await prisma.voteOption.findUnique({
+            where: {studyId_id: {studyId: vote.study_id, id: vote.chosen_option_id}}
+        })
+        if (!item || !voteOption){ return <p>Failed to load.</p>}
+        return <div>
+            <p>Assigned option '{voteOption.name}' to item 
+                <a href={`/study/${vote.study_id}/item/${vote.item_id}`}
+                className="underline cursor-pointer pl-1">
+                    {item.name}
+                </a>
+            </p>
+        </div>
+    })
+    console.log(`votes div: ${JSON.stringify(votes_div)}`)
     return <div className="grid grid-cols-3 items-start">
         <div>
             <p className="p-0 m-0 mt-5 ml-5">
@@ -46,26 +64,10 @@ export default async function Account() {
                 <h3 className="font-bold pt-5">Votes</h3>
                 <div>
                     {
-                        participant.votes.map(async (vote) => {
-                            const item = await prisma.item.findUnique({
-                                where: {studyId_id: {studyId: vote.study_id, id: vote.item_id}}
-                            })
-                            const voteOption = await prisma.voteOption.findUnique({
-                                where: {studyId_id: {studyId: vote.study_id, id: vote.chosen_option_id}}
-                            })
-                            if (!item || !voteOption){ return <p>Failed to load.</p>}
-                            return <div>
-                                <p>Assigned option '{voteOption.name}' to item 
-                                    <a href={`/study/${vote.study_id}/item/${vote.item_id}`}
-                                    className="underline cursor-pointer pl-1">
-                                        {item.name}
-                                    </a>
-                                </p>
-                            </div>
-                        })
+                        votes_div?.length ? votes_div : <p className="italic">No votes registered</p>
                     }
                 </div>
-            </div>
+            </div> 
         }
         {
             !user && participant &&
